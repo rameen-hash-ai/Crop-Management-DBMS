@@ -1,0 +1,51 @@
+field_id,user_id,region_id,field_name,latitude,longitude,area,soil_type,is_active
+1,11,2,Field-1,31.1352,71.4018,16.63,Loamy,True
+2,2,2,Field-2,30.4078,72.4049,5.83,Loamy,True
+3,1,7,Field-3,31.8607,71.4604,4.2,Silty,True
+4,12,2,Field-4,30.5848,74.2802,10.04,Clay,True
+5,5,6,Field-5,30.0417,74.124,9.91,Silty,True
+6,4,6,Field-6,29.9906,73.9782,10.67,Silty,True
+7,4,5,Field-7,30.8718,72.3533,15.26,Clay Loam,True
+8,3,1,Field-8,30.0357,71.5796,14.28,Loamy,True
+9,12,8,Field-9,30.9368,74.1218,19.72,Silty,True
+10,2,2,Field-10,31.8139,74.3355,4.22,Loamy,True
+11,11,7,Field-11,30.4183,71.6655,9.55,Clay Loam,True
+12,12,2,Field-12,29.9141,72.9066,8.44,Loamy,True
+13,15,5,Field-13,32.0931,71.6146,17.58,Silty,True
+14,9,6,Field-14,30.7267,73.7579,6.85,Loamy,True
+15,2,4,Field-15,29.5545,73.7741,5.83,Clay Loam,True
+16,10,2,Field-16,29.4319,71.798,10.35,Clay,True
+17,7,1,Field-17,29.607,72.8734,9.88,Loamy,True
+18,1,4,Field-18,31.0568,73.1044,7.37,Silty,True
+19,1,5,Field-19,31.5178,72.2217,6.87,Clay Loam,True
+20,2,2,Field-20,30.482,74.1045,18.66,Silty,True
+21,4,4,Field-21,29.4779,72.7117,10.25,Silty,True
+22,4,2,Field-22,30.3685,72.0566,17.57,Loamy,True
+23,9,7,Field-23,32.0891,73.0718,12.13,Silty,True
+24,10,5,Field-24,30.7815,73.6628,3.39,Loamy,True
+25,1,8,Field-25,32.019,72.0236,19.99,Clay,True
+26,9,6,Field-26,31.7102,72.3663,17.13,Silty,True
+27,4,3,Field-27,29.3321,74.485,19.46,Silty,True
+28,12,6,Field-28,31.318,73.4146,18.71,Silty,True
+29,11,6,Field-29,31.2088,72.7581,17.35,Sandy Loam,True
+30,12,4,Field-30,30.8035,73.0045,5.41,Sandy Loam,True
+31,9,5,Field-31,30.0471,71.7751,11.0,Clay Loam,True
+32,7,2,Field-32,31.0947,72.0966,6.24,Sandy Loam,True
+33,4,3,Field-33,29.6123,72.4481,9.52,Clay Loam,True
+34,8,4,Field-34,30.5173,73.2238,3.53,Sandy Loam,True
+35,10,3,Field-35,30.5704,72.1134,9.13,Clay,True
+36,5,8,Field-36,31.9707,72.0827,19.74,Clay Loam,True
+37,13,7,Field-37,31.7524,71.6201,7.14,Sandy Loam,True
+38,14,5,Field-38,30.0375,73.3564,16.22,Clay,True
+39,1,4,Field-39,30.7016,72.1097,10.46,Sandy Loam,True
+40,13,6,Field-40,29.8002,74.2068,9.9,Loamy,True
+41,13,1,Field-41,31.8554,74.0649,19.25,Loamy,True
+42,3,4,Field-42,31.7375,71.6197,19.92,Clay,True
+43,12,1,Field-43,30.1356,72.1378,12.23,Silty,True
+44,7,6,Field-44,31.0891,73.4738,15.07,Silty,True
+45,6,7,Field-45,31.0051,72.0641,5.21,Loamy,True
+46,5,5,Field-46,29.7279,71.8102,7.69,Loamy,False
+47,3,2,Field-47,31.435,74.3001,19.45,Silty,False
+48,4,4,Field-48,30.8103,73.1702,12.64,Clay Loam,False
+49,13,6,Field-49,31.4802,72.8653,11.99,Silty,False
+50,6,4,Field-50,30.785,73.8323,15.59,Sandy Loam,False

@@ -1,0 +1,21 @@
+user_id,name,email,role,is_active
+1,Muhammad Ali Khan,farmer1@punjabag.com,farmer,True
+2,Fatima Bibi,farmer2@punjabag.com,farmer,True
+3,Ahmed Hassan,farmer3@punjabag.com,farmer,True
+4,Sara Khan,farmer4@punjabag.com,farmer,True
+5,Hassan Ali,farmer5@punjabag.com,farmer,True
+6,Zainab Malik,farmer6@punjabag.com,farmer,True
+7,Omar Farooq,farmer7@punjabag.com,farmer,True
+8,Amira Khan,farmer8@punjabag.com,farmer,True
+9,Bilal Ahmed,farmer9@punjabag.com,farmer,True
+10,Hina Mirza,farmer10@punjabag.com,farmer,True
+11,Karim Khan,farmer11@punjabag.com,farmer,True
+12,Nadia Ahmed,farmer12@punjabag.com,farmer,True
+13,Salman Hussain,farmer13@punjabag.com,farmer,True
+14,Layla Khan,farmer14@punjabag.com,farmer,True
+15,Tariq Ali,farmer15@punjabag.com,farmer,True
+16,Rania Malik,farmer16@punjabag.com,admin,True
+17,Shahid Khan,farmer17@punjabag.com,admin,True
+18,Mariam Ahmed,farmer18@punjabag.com,analyst,True
+19,Wasim Hassan,farmer19@punjabag.com,analyst,False
+20,Ayesha Khan,farmer20@punjabag.com,analyst,False

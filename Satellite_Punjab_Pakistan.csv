@@ -1,4 +1,0 @@
-satellite_id,name,provider,resolution
-2001,Sentinel-2,ESA,10m
-2002,Landsat-8,NASA,30m
-2003,MODIS,NASA,250m

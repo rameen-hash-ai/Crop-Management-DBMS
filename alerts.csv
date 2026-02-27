@@ -1,0 +1,121 @@
+alert_id,field_id,observation_id,alert_type,severity,message,is_resolved,resolved_at
+1,36,,vegetation_stress,medium,Alert message 1,0,2024-03-10 00:00:00
+2,19,15,water_stress,low,Alert message 2,0,
+3,42,124,vegetation_stress,high,Alert message 3,1,2024-08-30 00:00:00
+4,16,,extreme_weather,low,Alert message 4,1,
+5,34,,extreme_weather,high,Alert message 5,0,
+6,18,5,disease_detected,low,Alert message 6,1,
+7,21,,pest_warning,medium,Alert message 7,0,
+8,45,111,pest_warning,high,Alert message 8,0,2024-06-08 00:00:00
+9,35,62,disease_detected,high,Alert message 9,0,2024-04-12 00:00:00
+10,33,7,pest_warning,critical,Alert message 10,1,2024-10-02 00:00:00
+11,7,163,water_stress,high,Alert message 11,1,
+12,4,,extreme_weather,critical,Alert message 12,0,
+13,23,,extreme_weather,low,Alert message 13,0,2024-10-31 00:00:00
+14,27,194,disease_detected,critical,Alert message 14,1,
+15,46,,vegetation_stress,low,Alert message 15,1,
+16,40,,water_stress,high,Alert message 16,0,
+17,32,91,disease_detected,high,Alert message 17,1,
+18,18,191,pest_warning,critical,Alert message 18,1,2024-04-08 00:00:00
+19,6,,disease_detected,low,Alert message 19,0,
+20,14,,vegetation_stress,medium,Alert message 20,1,2024-08-06 00:00:00
+21,9,,extreme_weather,low,Alert message 21,0,
+22,34,91,extreme_weather,high,Alert message 22,0,
+23,15,,extreme_weather,medium,Alert message 23,0,2024-07-25 00:00:00
+24,20,76,extreme_weather,low,Alert message 24,0,2024-10-14 00:00:00
+25,48,53,extreme_weather,high,Alert message 25,0,
+26,36,18,pest_warning,medium,Alert message 26,0,2024-02-09 00:00:00
+27,14,,disease_detected,high,Alert message 27,0,
+28,8,65,disease_detected,medium,Alert message 28,1,
+29,24,152,pest_warning,low,Alert message 29,0,
+30,47,16,disease_detected,low,Alert message 30,0,
+31,10,76,water_stress,low,Alert message 31,0,
+32,3,,water_stress,medium,Alert message 32,1,
+33,16,86,vegetation_stress,low,Alert message 33,0,
+34,45,7,water_stress,medium,Alert message 34,0,2024-07-15 00:00:00
+35,29,122,pest_warning,critical,Alert message 35,1,
+36,42,17,extreme_weather,high,Alert message 36,0,2024-10-30 00:00:00
+37,49,121,disease_detected,critical,Alert message 37,0,2024-11-11 00:00:00
+38,30,,extreme_weather,medium,Alert message 38,0,2024-08-30 00:00:00
+39,8,40,extreme_weather,low,Alert message 39,0,
+40,2,78,disease_detected,low,Alert message 40,0,
+41,32,,vegetation_stress,medium,Alert message 41,0,
+42,3,143,disease_detected,high,Alert message 42,0,
+43,18,,disease_detected,low,Alert message 43,0,2024-11-10 00:00:00
+44,18,93,water_stress,critical,Alert message 44,0,
+45,38,,vegetation_stress,high,Alert message 45,1,
+46,25,,disease_detected,low,Alert message 46,0,2024-06-14 00:00:00
+47,20,117,disease_detected,medium,Alert message 47,0,
+48,6,129,pest_warning,critical,Alert message 48,0,2024-03-11 00:00:00
+49,4,98,pest_warning,medium,Alert message 49,0,
+50,18,58,water_stress,low,Alert message 50,1,
+51,40,,water_stress,high,Alert message 51,0,2024-06-16 00:00:00
+52,25,,disease_detected,low,Alert message 52,1,
+53,32,,disease_detected,low,Alert message 53,1,2024-05-03 00:00:00
+54,2,39,extreme_weather,low,Alert message 54,0,
+55,25,108,vegetation_stress,high,Alert message 55,0,
+56,25,177,water_stress,critical,Alert message 56,1,
+57,29,120,disease_detected,medium,Alert message 57,0,
+58,3,131,water_stress,medium,Alert message 58,0,
+59,15,14,vegetation_stress,high,Alert message 59,0,
+60,14,55,water_stress,low,Alert message 60,1,
+61,25,,extreme_weather,critical,Alert message 61,0,2024-04-19 00:00:00
+62,12,30,extreme_weather,medium,Alert message 62,1,2024-11-20 00:00:00
+63,43,75,water_stress,medium,Alert message 63,0,2024-12-30 00:00:00
+64,28,190,vegetation_stress,medium,Alert message 64,0,
+65,35,187,extreme_weather,low,Alert message 65,1,
+66,4,184,vegetation_stress,low,Alert message 66,0,
+67,43,164,extreme_weather,low,Alert message 67,0,2024-05-08 00:00:00
+68,20,181,extreme_weather,low,Alert message 68,0,2024-10-12 00:00:00
+69,3,89,water_stress,low,Alert message 69,0,2024-11-29 00:00:00
+70,35,,vegetation_stress,medium,Alert message 70,0,
+71,49,80,pest_warning,critical,Alert message 71,0,
+72,23,,vegetation_stress,medium,Alert message 72,0,
+73,2,124,disease_detected,low,Alert message 73,0,
+74,39,,water_stress,high,Alert message 74,1,2024-08-05 00:00:00
+75,49,,disease_detected,medium,Alert message 75,1,
+76,22,79,extreme_weather,critical,Alert message 76,1,
+77,17,140,pest_warning,medium,Alert message 77,0,2024-04-07 00:00:00
+78,49,,pest_warning,low,Alert message 78,0,
+79,38,,extreme_weather,low,Alert message 79,1,
+80,14,124,water_stress,high,Alert message 80,0,2024-01-06 00:00:00
+81,49,76,pest_warning,high,Alert message 81,1,
+82,2,146,disease_detected,high,Alert message 82,0,
+83,22,,vegetation_stress,critical,Alert message 83,1,
+84,47,46,vegetation_stress,medium,Alert message 84,1,
+85,40,80,pest_warning,high,Alert message 85,0,
+86,28,140,pest_warning,critical,Alert message 86,0,2024-05-09 00:00:00
+87,28,50,pest_warning,critical,Alert message 87,1,
+88,47,94,disease_detected,low,Alert message 88,0,
+89,48,,vegetation_stress,critical,Alert message 89,1,
+90,49,,water_stress,medium,Alert message 90,0,2024-11-24 00:00:00
+91,4,176,disease_detected,medium,Alert message 91,1,
+92,7,172,vegetation_stress,critical,Alert message 92,0,
+93,36,68,disease_detected,critical,Alert message 93,0,2024-05-09 00:00:00
+94,25,158,vegetation_stress,high,Alert message 94,1,
+95,47,,water_stress,medium,Alert message 95,0,
+96,44,,vegetation_stress,high,Alert message 96,0,
+97,19,,disease_detected,high,Alert message 97,0,
+98,35,164,water_stress,low,Alert message 98,1,2024-08-29 00:00:00
+99,30,46,extreme_weather,high,Alert message 99,0,2024-11-19 00:00:00
+100,28,150,disease_detected,medium,Alert message 100,1,
+101,37,,disease_detected,high,Alert message 101,0,
+102,47,,pest_warning,medium,Alert message 102,0,2024-11-27 00:00:00
+103,37,,extreme_weather,medium,Alert message 103,0,2024-02-23 00:00:00
+104,50,184,vegetation_stress,low,Alert message 104,0,
+105,34,147,disease_detected,high,Alert message 105,0,
+106,17,,vegetation_stress,high,Alert message 106,1,2024-03-19 00:00:00
+107,11,194,pest_warning,critical,Alert message 107,1,2024-03-31 00:00:00
+108,25,,vegetation_stress,critical,Alert message 108,0,2024-03-08 00:00:00
+109,30,,extreme_weather,critical,Alert message 109,1,
+110,48,,disease_detected,critical,Alert message 110,0,2024-03-02 00:00:00
+111,16,118,water_stress,low,Alert message 111,1,
+112,9,39,extreme_weather,low,Alert message 112,0,2024-02-01 00:00:00
+113,1,17,vegetation_stress,critical,Alert message 113,0,
+114,18,,vegetation_stress,high,Alert message 114,0,2024-05-22 00:00:00
+115,44,156,water_stress,medium,Alert message 115,1,2024-04-09 00:00:00
+116,18,157,water_stress,medium,Alert message 116,1,2024-01-09 00:00:00
+117,6,151,extreme_weather,critical,Alert message 117,0,
+118,16,,pest_warning,high,Alert message 118,0,2024-06-11 00:00:00
+119,50,48,water_stress,high,Alert message 119,0,2024-03-27 00:00:00
+120,35,177,water_stress,critical,Alert message 120,1,2024-10-27 00:00:00

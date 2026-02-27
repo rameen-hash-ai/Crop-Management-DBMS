@@ -1,0 +1,9 @@
+region_id,region_name,climate_type,latitude,longitude
+1,Lahore District,temperate,31.5204,74.3587
+2,Faisalabad District,temperate,31.418,72.3456
+3,Multan District,arid,30.1575,71.4289
+4,Bahawalpur District,arid,29.3669,71.6831
+5,Okara District,temperate,30.8164,73.4533
+6,Jhang District,temperate,31.2777,72.3192
+7,Gujranwala District,temperate,32.1657,74.1872
+8,Sargodha District,temperate,32.0762,72.6431

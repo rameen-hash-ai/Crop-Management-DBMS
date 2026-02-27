@@ -1,0 +1,6 @@
+satellite_id,name,provider,resolution
+1,Sentinel-2A,ESA,10m
+2,Sentinel-2B,ESA,10m
+3,Landsat-8,USGS,30m
+4,Landsat-9,USGS,30m
+5,Planet Labs Dove,Planet Labs,3m
