@@ -1,0 +1,9 @@
+psycopg2-binary==2.9.9
+sqlalchemy==2.0.23
+pydantic==2.5.0
+pydantic[email]==2.5.0
+werkzeug==3.0.1
+python-dotenv==1.0.0
+Flask==3.0.0
+Flask-JWT-Extended==4.5.2
+pandas==2.1.1
