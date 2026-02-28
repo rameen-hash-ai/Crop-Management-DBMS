@@ -1,8 +1,14 @@
 from pydantic import BaseModel,EmailStr,field_validator
 from typing import Optional
 from datetime import datetime
-
+#hello
 #User Schemas
+#Base = What user enters
+# Create = Base + required relationships
+# Update = Everything optional
+# Response = Base + what DB generates
+# Pass = Class has nothing unique to add
+print("HELLO FROM REAL FILE")
 class UserBase(BaseModel):
     #base user schema with common fields for user creation and update
     name:str
@@ -42,7 +48,7 @@ class RegionBase(BaseModel):
 
 class RegionCreate(RegionBase):
      latitude:Optional[float]=None
-     longitude=Optional[float]=None
+     longitude:Optional[float]=None
 
 class RegionResponse(RegionBase):
     region_id:int
@@ -58,7 +64,7 @@ class FieldBase(BaseModel):
     region_id:int
     field_name:str
 
-class fieldCreate(FieldBase):
+class FieldCreate(FieldBase):
     #the user must provide this info in order to create a field
     user_id:int
     region_id:int
@@ -74,7 +80,7 @@ class FieldResponse(FieldBase):
 
 class CropCycleBase(BaseModel):
      crop_name:str
-     field_id=int
+     field_id:int
      start_date:datetime
      expected_harvest_date:datetime
 
@@ -149,3 +155,114 @@ class BandValueUpdate(BaseModel):
      band_name:Optional[str]=None
      band_value:Optional[float]=None
      
+class AlertBase(BaseModel):
+    alert_type:str
+    severity:str
+    message:str
+    field_id:int
+class AlertCreate(AlertBase):
+    field_id:int
+    observation_id:Optional[int]=None
+class AlertUpdate(BaseModel):
+    alert_type:Optional[str]=None
+    severity:Optional[str]=None
+    message:Optional[str]=None
+    is_resolved:Optional[bool]=None
+    resolved_at:Optional[datetime]=None
+class AlertResponse(AlertBase):
+    alert_id:int
+    field_id:int
+    observation_id:Optional[int]=None
+    is_resolved:bool
+    resolved_at:Optional[datetime]=None
+    created_at:datetime
+    class Config:
+        from_attributes=True
+class SatelliteBase(BaseModel):
+    satellite_name:str
+    provider:str
+    resolution:float
+
+class SatelliteCreate(SatelliteBase):
+    pass
+
+class SatlliteResponse(SatelliteBase):
+        satellite_id:int
+        created_at:datetime
+        class Config:
+            from_attributes=True
+class SatelliteUpdate(BaseModel):
+    satellite_name:Optional[str]=None
+    provider:Optional[str]=None
+    resolution:Optional[float]=None
+
+class ObservationBase(BaseModel):
+     field_id:int
+     satellite_id:int
+     cycle_id:int
+     observation_date:datetime
+     cloud_cover:float
+class ObservationCreate(ObservationBase):
+     field_id:int
+     satellite_id:int
+     cycle_id:int
+class ObservationUpdate(BaseModel):
+    field_id:Optional[int]=None
+    satellite_id:Optional[int]=None
+    cycle_id:Optional[int]=None
+    observation_date:Optional[datetime]=None
+    cloud_cover:Optional[float]=None
+class ObservationResponse(ObservationBase):
+    observation_id:int
+    created_at:datetime
+    class Config:
+        from_attributes=True
+
+class DerivedMetricsBase(BaseModel):
+     observation_id:int
+     ndvi:float
+     evi:float
+     soil_moisture:float
+     crop_health_score:float
+class DerivedMetricsCreate(DerivedMetricsBase):
+     observation_id:int
+class DerivedMetricsUpdate(BaseModel):
+    observation_id:Optional[int]=None
+    ndvi:Optional[float]=None
+    evi:Optional[float]=None
+    soil_moisture:Optional[float]=None
+    crop_health_score:Optional[float]=None
+class DerivedMetricsResponse(DerivedMetricsBase):
+    metric_id:int
+    created_at:datetime
+    class Config:
+        from_attributes=True
+class WeatherBase(BaseModel):
+     field_id:int
+     date:datetime
+     temperature:str
+     rainfall:str
+     humidity:str
+     wind_speed:Optional[str]=None
+     wind_direction:Optional[str]=None
+     pressure:Optional[str]=None
+class WeatherCreate(WeatherBase):
+     field_id:int   
+
+class WeatherUpdate(BaseModel):
+    field_id:Optional[int]=None
+    date:Optional[datetime]=None
+    temperature:Optional[str]=None
+    rainfall:Optional[str]=None
+    humidity:Optional[str]=None
+    wind_speed:Optional[str]=None
+    wind_direction:Optional[str]=None
+    pressure:Optional[str]=None
+class WeatherResponse(WeatherBase):
+    weather_id:int
+    created_at:datetime
+    class Config:
+        from_attributes=True
+
+
+    

@@ -35,3 +35,12 @@ def get_db():
         yield db
     finally:
         db.close()
+
+def init_db():
+    from models import User,Field,region,Satellite,CropCycle,Weather,Alert
+    base.metadata.create_all(bind=engine)
+    print("Database tables created successfully")
+
+if __name__=="__main__":
+    if TestConnection():
+        init_db()
