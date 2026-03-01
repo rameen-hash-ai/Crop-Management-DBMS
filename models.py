@@ -74,6 +74,8 @@ class User(base):
     name=Column(String(150),nullable=False)
     role=Column(String(50),nullable=False)
     email=Column(String(150),unique=True,nullable=False)
+    password_hash=Column(String(255),nullable=False)
+    is_active=Column(Boolean,default=True)
 
     fields=relationship("Field",back_populates="owner",cascade="all,delete-orphan")
 
@@ -90,7 +92,7 @@ class Field(base):
     __tablename__="fields"
     field_id=Column(Integer,primary_key=True,index=True)
     user_id=Column(Integer,ForeignKey("users.user_id"))
-    region_id=Column(Integer,ForeignKey("regions.region_id"))
+    region_id=Column(Integer,ForeignKey("region.region_id"))
     latitude=Column(Float(20),nullable=False)
     longitude=Column(Float(20),nullable=False)
     area=Column(Float(20),nullable=False)
@@ -100,25 +102,28 @@ class Field(base):
     region=relationship("Region",back_populates="fields")
     crop_cycles=relationship("CropCycle",back_populates="fields",cascade="all,delete-orphan")
     weather_data=relationship("Weather",back_populates="fields")
-    alert=relationship("Alert",back_populates="fields")
+    observations=relationship("Observation",back_populates="fields")
+    alerts=relationship("Alert",back_populates="field")
 
 
-class region(base):
+class Region(base):
     __tablename__="region"
-    region_id=Column(Integer,primary_key=True,indx=True)
+    region_id=Column(Integer,primary_key=True,index=True)
     region_name=Column(String(150),nullable=False)
     climate_type=Column(String(50),nullable=False)
+    latitude=Column(Float(20),nullable=True)
+    longitude=Column(Float(20),nullable=True)
 
     fields=relationship("Field",back_populates="region")
 
 class Satellite(base):
-    __tablename__="Satellite"
+    __tablename__="satellite"
     satellite_id=Column(Integer,primary_key=True,index=True)
     satellite_name=Column(String(100),nullable=False)
     provider=Column(String(50),nullable=False)
     resolution=Column(Float(20),nullable=False)
 
-    Observation=relationship("Observation",back_populates="satellite_id")
+    observations=relationship("Observation",back_populates="satellite")
 class CropCycle(base):
     __tablename__="crop_cycle"
     cycle_id=Column(Integer,primary_key=True,index=True)
@@ -127,10 +132,8 @@ class CropCycle(base):
     start_date=Column(String(20),nullable=False)
     expected_harvest_date=Column(String(20),nullable=False)
     
-
-
     fields=relationship("Field",back_populates="crop_cycles")
-    observation=relationship("Observation",back_populates="crop_cycle") 
+    observations=relationship("Observation",back_populates="crop_cycle") 
 
 
 class Weather(base):
@@ -153,17 +156,17 @@ class Observation(base):
     __tablename__="observation"
     observation_id=Column(Integer,primary_key=True,index=True)
     field_id=Column(Integer,ForeignKey("fields.field_id"))
-    satellite_id=Column(Integer,ForeignKey("Satellite.satellite_id"))
+    satellite_id=Column(Integer,ForeignKey("satellite.satellite_id"))
     cycle_id=Column(Integer,ForeignKey("crop_cycle.cycle_id"))
     observation_date=Column(String(20),nullable=False)
     cloud_cover=Column(Float)
     
 
     fields=relationship("Field",back_populates="observations")
-    satellite_id=relationship("Satellite",back_populates="observations")
+    satellite=relationship("Satellite",back_populates="observations")
     crop_cycle=relationship("CropCycle",back_populates="observations")
-    Bandvalues=relationship("Bandvalues",back_populates="observation",cascade="all,delete-orphan")
-    derived_metrics=relationship("DerivedMetrics",back_populates="observation",cascade="all delete-orphan") 
+    bandvalues=relationship("Bandvalues",back_populates="observation",cascade="all,delete-orphan")
+    derived_metrics=relationship("DerivedMetrics",back_populates="observation",cascade="all,delete-orphan") 
     alerts=relationship("Alert",back_populates="observation",cascade="all,delete-orphan")   
 
 
@@ -186,15 +189,15 @@ class DerivedMetrics(base):
     evi=Column(Float)
     soil_moisture=Column(Float)
     crop_health_score=Column(Float)
-    created_at = Column(DateTime, default=datetime.utcnow)\
+    created_at = Column(DateTime, default=datetime.utcnow)
 
     observation=relationship("Observation",back_populates="derived_metrics")
 
 class Alert(base):
     __tablename__="alert"
     alert_id=Column(Integer,primary_key=True,index=True)
-    field_id = Column(Integer, ForeignKey('fields.id', ondelete='CASCADE'), nullable=False)
-    observation_id = Column(Integer, ForeignKey('observations.id', ondelete='SET NULL'), nullable=True)
+    field_id = Column(Integer, ForeignKey('fields.field_id', ondelete='CASCADE'), nullable=False)
+    observation_id = Column(Integer, ForeignKey('observation.observation_id', ondelete='SET NULL'), nullable=True)
     
     alert_type = Column(String(100), nullable=False, index=True)
     severity = Column(String(50), nullable=False)
