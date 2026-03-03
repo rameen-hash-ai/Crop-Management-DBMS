@@ -50,7 +50,7 @@ class DataBaseSeeder:
 
         logger.info("Creating database tables if they do not exist")
         try:
-            base.metadata.create_all(bind=engine)
+            models.base.metadata.create_all(bind=engine)
             logger.info("Database tables created Successfully")
         except Exception as e:
             logger.error(f"Error creating database tables: {e}")
@@ -76,7 +76,7 @@ class DataBaseSeeder:
                 self.db.add(region)
                 self.db.commit()
                 logger.info(f"Region {row['region_name']} imported successfully")
-                self.records_imported+=len(regions_df)
+                self.records_imported+=1
         except Exception as e:
             logger.error(f"Error importing regions data: {e}")
             self.db.rollback()
@@ -102,10 +102,10 @@ class DataBaseSeeder:
                     is_active=row.get("is_active",True))
                 
                 user.set_password(row.get("password","defaultPassword123"))
-            self.db.add(user)
-            self.db.commit()
-            logger.info(f"User {row['name']} imported successfully")
-            self.records_imported+=len(users_df)
+                self.db.add(user)
+                self.db.commit()
+                logger.info(f"User {row['name']} imported successfully")
+                self.records_imported+=1
         except Exception as e:
             logger.error(f"Error importing users data: {e}")
             self.db.rollback()
@@ -132,6 +132,7 @@ class DataBaseSeeder:
                 self.db.add(satellite)
                 self.db.commit()
                 logger.info(f"Satellite {row.get('name','Unknown')} imported successfully")
+                self.records_imported+=1
         except Exception as e:
             logger.error(f"Error importing satellites data: {e}")
             self.db.rollback()
@@ -166,6 +167,7 @@ class DataBaseSeeder:
                 self.db.add(field)
                 self.db.commit()
                 logger.info(f"Field with ID {row['field_id']} imported successfully")
+                self.records_imported+=1
         except Exception as e:
             logger.error(f"Error importing fields data: {e}")
             self.db.rollback()
@@ -200,6 +202,7 @@ class DataBaseSeeder:
                 self.db.add(crop_cycle)
                 self.db.commit()
                 logger.info(f"Crop Cycle with ID {row['cycle_id']} imported successfully")
+                self.records_imported+=1
         except Exception as e:
             logger.error(f"Error importing crop cycles data: {e}")
             self.db.rollback()
@@ -235,6 +238,7 @@ class DataBaseSeeder:
                 self.db.add(observation)
                 self.db.commit()
                 logger.info(f"Observation with ID {row['observation_id']} imported successfully")
+                self.records_imported+=1
         except Exception as e:
             logger.error(f"Error importing observations data: {e}")
             self.db.rollback()
@@ -266,6 +270,7 @@ class DataBaseSeeder:
                 self.db.add(band_value)
                 self.db.commit()
                 logger.info(f"Band Value with ID {row['band_id']} imported successfully")
+                self.records_imported+=1
         except Exception as e:
             logger.error(f"Error importing band values data: {e}")
             self.db.rollback()
@@ -302,6 +307,7 @@ class DataBaseSeeder:
                 self.db.add(weather)
                 self.db.commit()
                 logger.info(f"Weather with ID {row['weather_id']} imported successfully")
+                self.records_imported+=1
         except Exception as e:
             logger.error(f"Error importing weather data: {e}")
             self.db.rollback()
@@ -355,9 +361,9 @@ class DataBaseSeeder:
                 )
                 self.db.add(metrics)
             
-            self.db.commit()
-            logger.info(f"✓ Imported {len(df) - skipped} derived metrics (skipped {skipped})")
-            self.records_imported += (len(df) - skipped)
+                self.db.commit()
+                logger.info(f"✓ Imported {len(df) - skipped} derived metrics (skipped {skipped})")
+                self.records_imported += 1
             
         except Exception as e:
             self.db.rollback()
@@ -376,7 +382,7 @@ class DataBaseSeeder:
                     logger.warning(f"Alert with ID {row['alert_id']} already exists. Skipping.")
                     continue
                 # Check if field exists
-                field_exists=self.db.query(models.Field).filter_by(field_id=row["field_id"]).first()
+                field_exists=self.db.query(models.Field).filter_by(field_id=int(row["field_id"])).first()
                 if not field_exists:
                     logger.warning(f"Field with ID {row['field_id']} does not exist. Skipping alert {row['alert_id']}.")
                     continue
@@ -393,6 +399,7 @@ class DataBaseSeeder:
                 self.db.add(alert)
                 self.db.commit()
                 logger.info(f"Alert with ID {row['alert_id']} imported successfully")
+                self.records_imported+=1
         except Exception as e:
             logger.error(f"Error importing alerts data: {e}")
             self.db.rollback()
