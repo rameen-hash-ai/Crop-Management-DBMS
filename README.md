@@ -138,7 +138,7 @@ Visit **http://localhost:5000/docs** for Swagger UI documentation
 
 ## 👥 Team
 
-- **Your Name** - Backend Development
+- Rameen Sohail - Backend Development
 
 ## 📝 Notes
 
