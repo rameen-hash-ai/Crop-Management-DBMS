@@ -1,6 +1,4 @@
-from pydantic import BaseModel,EmailStr,field_validator
-from typing import Optional
-from datetime import datetime
+
 #hello
 #User Schemas
 #Base = What user enters
@@ -8,261 +6,287 @@ from datetime import datetime
 # Update = Everything optional
 # Response = Base + what DB generates
 # Pass = Class has nothing unique to add
-print("HELLO FROM REAL FILE")
+from pydantic import BaseModel, EmailStr, field_validator
+from typing import Optional
+from datetime import datetime
+
+
+# ======================= User Schemas =======================
+
 class UserBase(BaseModel):
-    #base user schema with common fields for user creation and update
-    name:str
-    email:EmailStr
-    role:str="farmer"
+    name: str
+    email: EmailStr
+    role: str = "farmer"
 
 class UserCreate(UserBase):
-    #schema for user registration with password field
-    password:str
+    password: str
     @field_validator("password")
     @classmethod
-    def validate_password(cls,password):
-        if len(password)<8:
+    def validate_password(cls, password):
+        if len(password) < 8:
             raise ValueError("Password must be at least 8 characters")
         return password
+
 class UserLogin(BaseModel):
-        #schema for user login with email and password
-        email:EmailStr
-        password:str
+    email: EmailStr
+    password: str
+
 class UserResponse(UserBase):
-        #schema for user response without password
-        user_id:int
-        is_active:bool
-        created_at:datetime
-        class Config:
-            from_attributes=True
+    user_id: int
+    is_active: bool
+    created_at: datetime
+    class Config:
+        from_attributes = True
+
+class UserUpdate(BaseModel):
+    name: Optional[str] = None
+    email: Optional[EmailStr] = None
+    role: Optional[str] = None
+    password: Optional[str] = None
+    is_active: Optional[bool] = None
+    @field_validator("password")
+    @classmethod
+    def validate_password(cls, password):
+        if password and len(password) < 8:
+            raise ValueError("Password must be at least 8 characters")
+        return password
 
 class LoginResponse(BaseModel):
-    #schema for login response with user details and token
-    access_token:str
-    token_type:str="bearer"
-    user:UserResponse
+    access_token: str
+    token_type: str = "bearer"
+    user: UserResponse
+
+
+# ======================= Region Schemas =======================
 
 class RegionBase(BaseModel):
-    region_name:str
-    climate_type:str
+    region_name: str
+    climate_type: str
 
 class RegionCreate(RegionBase):
-     latitude:Optional[float]=None
-     longitude:Optional[float]=None
+    latitude: Optional[float] = None
+    longitude: Optional[float] = None
+
+class RegionUpdate(BaseModel):
+    region_name: Optional[str] = None
+    climate_type: Optional[str] = None
+    latitude: Optional[float] = None
+    longitude: Optional[float] = None
 
 class RegionResponse(RegionBase):
-    region_id:int
+    region_id: int
+    latitude: Optional[float] = None
+    longitude: Optional[float] = None
     class Config:
-        from_attributes=True
+        from_attributes = True
+
+
+# ======================= Field Schemas =======================
 
 class FieldBase(BaseModel):
-    #human entered data goes here
-    latitude:float
-    longitude:float
-    area:float
-    soil_type:str
-    region_id:int
-    field_name:str
+    latitude: float
+    longitude: float
+    area: float
+    soil_type: str
+    region_id: int
+    field_name: Optional[str] = None  # ✅ optional so old data without names doesn't crash
 
 class FieldCreate(FieldBase):
-    #the user must provide this info in order to create a field
-    user_id:int
-    region_id:int
+    user_id: int
+
+class FieldUpdate(BaseModel):
+    latitude: Optional[float] = None
+    longitude: Optional[float] = None
+    area: Optional[float] = None
+    soil_type: Optional[str] = None
+    field_name: Optional[str] = None
+    region_id: Optional[int] = None
+    is_active: Optional[bool] = None
+
 class FieldResponse(FieldBase):
-    #this information is sent back to the client,Database generates it
-    field_id:int
-    user_id:int
-    region_id:int   
-    is_active:bool
-    created_at:datetime
+    field_id: int
+    user_id: int
+    is_active: bool
+    created_at: datetime
     class Config:
-        from_attributes=True
+        from_attributes = True
+
+
+# ======================= Crop Cycle Schemas =======================
 
 class CropCycleBase(BaseModel):
-     crop_name:str
-     field_id:int
-     start_date:datetime
-     expected_harvest_date:datetime
+    crop_name: str
+    field_id: int
+    start_date: str          # ✅ str not datetime — model stores as String
+    expected_harvest_date: str
 
 class CropCycleCreate(CropCycleBase):
-     field_id:int
+    pass
+
+class CropCycleUpdate(BaseModel):
+    crop_name: Optional[str] = None
+    start_date: Optional[str] = None
+    expected_harvest_date: Optional[str] = None
+    status: Optional[str] = None
+    actual_harvest_date: Optional[str] = None
 
 class CropCycleResponse(CropCycleBase):
-        cycle_id:int
-        field_id:int
-        status:str
-        actual_harvest_date:Optional[datetime]=None
-        created_at:datetime
-        class Config:
-            from_attributes=True
-class BandValueBase(BaseModel):
-     band_name:str
-     band_value:float
-
-class BandValueCreate(BandValueBase):
-     observation_id:int
-     band_id:int
-
-class BandValueResponse(BandValueBase):
-     band_value_id:int
-     observation_id:int
-     band_id:int
-     created_at:datetime
-     class Config:
-         from_attributes=True
-
-#User Update Schema
-class UserUpdate(BaseModel):
-     name:Optional[str]=None
-     email:Optional[EmailStr]=None
-     role:Optional[str]=None
-     password:Optional[str]=None
-     is_active:Optional[bool]=None
-     @field_validator("password")
-     @classmethod
-     def validate_password(cls,password):
-          if password and len(password)<8:
-               raise ValueError("Password must be at least 8 characters")
-          return password
-
-#Region Update Schema
-class RegionUpdate(BaseModel):
-     region_name:Optional[str]=None
-     climate_type:Optional[str]=None
-     latitude:Optional[float]=None
-     longitude:Optional[float]=None
-
-#Field Update Schema
-class FieldUpdate(BaseModel):
-     latitude:Optional[float]=None
-     longitude:Optional[float]=None
-     area:Optional[float]=None
-     soil_type:Optional[str]=None
-     field_name:Optional[str]=None
-     region_id:Optional[int]=None
-     is_active:Optional[bool]=None
-
-#CropCycle Update Schema
-class CropCycleUpdate(BaseModel):
-     crop_name:Optional[str]=None
-     start_date:Optional[datetime]=None
-     expected_harvest_date:Optional[datetime]=None
-     status:Optional[str]=None
-     actual_harvest_date:Optional[datetime]=None
-
-#BandValue Update Schema
-class BandValueUpdate(BaseModel):
-     band_name:Optional[str]=None
-     band_value:Optional[float]=None
-     
-class AlertBase(BaseModel):
-    alert_type:str
-    severity:str
-    message:str
-    field_id:int
-class AlertCreate(AlertBase):
-    field_id:int
-    observation_id:Optional[int]=None
-class AlertUpdate(BaseModel):
-    alert_type:Optional[str]=None
-    severity:Optional[str]=None
-    message:Optional[str]=None
-    is_resolved:Optional[bool]=None
-    resolved_at:Optional[datetime]=None
-class AlertResponse(AlertBase):
-    alert_id:int
-    field_id:int
-    observation_id:Optional[int]=None
-    is_resolved:bool
-    resolved_at:Optional[datetime]=None
-    created_at:datetime
+    cycle_id: int
+    status: str
+    actual_harvest_date: Optional[str] = None  # ✅ str not datetime — model stores as String
+    created_at: datetime
     class Config:
-        from_attributes=True
+        from_attributes = True
+
+
+# ======================= Satellite Schemas =======================
+
 class SatelliteBase(BaseModel):
-    satellite_name:str
-    provider:str
-    resolution:float
+    satellite_name: str
+    provider: str
+    resolution: float
 
 class SatelliteCreate(SatelliteBase):
     pass
 
-class SatlliteResponse(SatelliteBase):
-        satellite_id:int
-        created_at:datetime
-        class Config:
-            from_attributes=True
 class SatelliteUpdate(BaseModel):
-    satellite_name:Optional[str]=None
-    provider:Optional[str]=None
-    resolution:Optional[float]=None
+    satellite_name: Optional[str] = None
+    provider: Optional[str] = None
+    resolution: Optional[float] = None
+
+class SatelliteResponse(SatelliteBase):   # ✅ fixed typo — was SatlliteResponse
+    satellite_id: int
+    created_at: datetime
+    class Config:
+        from_attributes = True
+
+
+# ======================= Observation Schemas =======================
 
 class ObservationBase(BaseModel):
-     field_id:int
-     satellite_id:int
-     cycle_id:int
-     observation_date:datetime
-     cloud_cover:float
+    field_id: int
+    satellite_id: int
+    cycle_id: int
+    observation_date: str    # ✅ str — model stores as String
+    cloud_cover: float
+
 class ObservationCreate(ObservationBase):
-     field_id:int
-     satellite_id:int
-     cycle_id:int
+    pass
+
 class ObservationUpdate(BaseModel):
-    field_id:Optional[int]=None
-    satellite_id:Optional[int]=None
-    cycle_id:Optional[int]=None
-    observation_date:Optional[datetime]=None
-    cloud_cover:Optional[float]=None
+    field_id: Optional[int] = None
+    satellite_id: Optional[int] = None
+    cycle_id: Optional[int] = None
+    observation_date: Optional[str] = None
+    cloud_cover: Optional[float] = None
+
 class ObservationResponse(ObservationBase):
-    observation_id:int
-    created_at:datetime
+    observation_id: int
+    created_at: datetime
     class Config:
-        from_attributes=True
+        from_attributes = True
+
+
+# ======================= Band Value Schemas =======================
+
+class BandValueBase(BaseModel):
+    band_name: str
+    band_value: float
+
+class BandValueCreate(BandValueBase):
+    observation_id: int
+
+class BandValueUpdate(BaseModel):
+    band_name: Optional[str] = None
+    band_value: Optional[float] = None
+
+class BandValueResponse(BandValueBase):
+    band_id: int              # ✅ fixed — model PK is band_id not band_value_id
+    observation_id: int
+    created_at: datetime
+    class Config:
+        from_attributes = True
+
+
+# ======================= Derived Metrics Schemas =======================
 
 class DerivedMetricsBase(BaseModel):
-     observation_id:int
-     ndvi:float
-     evi:float
-     soil_moisture:float
-     crop_health_score:float
+    observation_id: int
+    ndvi: float
+    evi: float
+    soil_moisture: float
+    crop_health_score: float
+
 class DerivedMetricsCreate(DerivedMetricsBase):
-     observation_id:int
+    pass
+
 class DerivedMetricsUpdate(BaseModel):
-    observation_id:Optional[int]=None
-    ndvi:Optional[float]=None
-    evi:Optional[float]=None
-    soil_moisture:Optional[float]=None
-    crop_health_score:Optional[float]=None
+    ndvi: Optional[float] = None
+    evi: Optional[float] = None
+    soil_moisture: Optional[float] = None
+    crop_health_score: Optional[float] = None
+
 class DerivedMetricsResponse(DerivedMetricsBase):
-    metric_id:int
-    created_at:datetime
+    metric_id: int
+    created_at: datetime
     class Config:
-        from_attributes=True
+        from_attributes = True
+
+
+# ======================= Weather Schemas =======================
+
 class WeatherBase(BaseModel):
-     field_id:int
-     date:datetime
-     temperature:str
-     rainfall:str
-     humidity:str
-     wind_speed:Optional[str]=None
-     wind_direction:Optional[str]=None
-     pressure:Optional[str]=None
+    field_id: int
+    date: str                # ✅ str — model stores as String
+    temperature: str
+    rainfall: str
+    humidity: str
+    wind_speed: Optional[str] = None
+    wind_direction: Optional[str] = None
+    pressure: Optional[str] = None
+
 class WeatherCreate(WeatherBase):
-     field_id:int   
+    pass
 
 class WeatherUpdate(BaseModel):
-    field_id:Optional[int]=None
-    date:Optional[datetime]=None
-    temperature:Optional[str]=None
-    rainfall:Optional[str]=None
-    humidity:Optional[str]=None
-    wind_speed:Optional[str]=None
-    wind_direction:Optional[str]=None
-    pressure:Optional[str]=None
+    date: Optional[str] = None
+    temperature: Optional[str] = None
+    rainfall: Optional[str] = None
+    humidity: Optional[str] = None
+    wind_speed: Optional[str] = None
+    wind_direction: Optional[str] = None
+    pressure: Optional[str] = None
+
 class WeatherResponse(WeatherBase):
-    weather_id:int
-    created_at:datetime
+    weather_id: int
+    created_at: datetime
     class Config:
-        from_attributes=True
+        from_attributes = True
 
 
-    
+# ======================= Alert Schemas =======================
+
+class AlertBase(BaseModel):
+    alert_type: str
+    severity: str
+    message: str
+    field_id: int
+
+class AlertCreate(AlertBase):
+    observation_id: Optional[int] = None
+
+class AlertUpdate(BaseModel):
+    alert_type: Optional[str] = None
+    severity: Optional[str] = None
+    message: Optional[str] = None
+    is_resolved: Optional[bool] = None
+    resolved_at: Optional[datetime] = None
+
+class AlertResponse(AlertBase):
+    alert_id: int
+    observation_id: Optional[int] = None
+    is_resolved: bool
+    resolved_at: Optional[datetime] = None
+    created_at: datetime
+    class Config:
+        from_attributes = True

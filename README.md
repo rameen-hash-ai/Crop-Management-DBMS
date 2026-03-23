@@ -1,156 +1,256 @@
-# 🌾 Crop Management DBMS
+# 🌾 Crop Management DBMS API
 
-A comprehensive database management system for agricultural field management with satellite data integration.
+A FastAPI-based agricultural field management system with Role-Based Access Control (RBAC).
 
-## 📊 Features
+---
 
-- ✅ User authentication (JWT)
-- ✅ Field management (CRUD)
-- ✅ Crop cycle tracking
-- ✅ Satellite observation data (1,599+ records)
-- ✅ Weather tracking
-- ✅ Alerts & monitoring
-- ✅ FastAPI with auto-documentation
+## 📋 Prerequisites
 
-## 🗄️ Database
+Make sure you have these installed before starting:
 
-- **PostgreSQL** - Production database
-- **1,599 records** - Seeded with agricultural data
-- **10 tables** - Users, Regions, Fields, Crop Cycles, Observations, etc.
+- [Python 3.10+](https://www.python.org/downloads/)
+- [PostgreSQL 14+](https://www.postgresql.org/download/)
+- [Git](https://git-scm.com/)
+- [pgAdmin](https://www.pgadmin.org/) (optional but recommended)
 
-## 🚀 Quick Start
+---
 
-### Prerequisites
-- Python 3.9+
-- PostgreSQL 18+
-- pip
+## 🚀 Getting Started
 
-### Installation
+### 1. Clone the Repository
 
-1. **Clone the repo:**
 ```bash
-   git clone https://github.com/YOUR_USERNAME/crop-management-dbms.git
-   cd DBMS
+git clone <your-repo-url>
+cd <repo-folder>
 ```
 
-2. **Create virtual environment:**
+### 2. Create a Virtual Environment
+
 ```bash
-   python -m venv venv
-   venv\Scripts\activate
+# Windows
+python -m venv venv
+venv\Scripts\activate
+
+# Mac/Linux
+python3 -m venv venv
+source venv/bin/activate
 ```
 
-3. **Install dependencies:**
+### 3. Install Dependencies
+
 ```bash
-   pip install -r requirements.txt
+pip install fastapi uvicorn sqlalchemy psycopg2-binary python-dotenv bcrypt python-jose[cryptography] pydantic[email]
 ```
 
-4. **Setup database:**
-   - Create PostgreSQL database: `cropdb`
-   - Update `.env` with your database credentials
-   - Run: `python seed.py`
+Or if a `requirements.txt` exists:
 
-5. **Run the API:**
 ```bash
-   python main.py
+pip install -r requirements.txt
 ```
 
-6. **Test the API:**
-   - Open: http://localhost:5000/docs
+### 4. Set Up PostgreSQL Database
+
+Open pgAdmin or psql and run:
+
+```sql
+CREATE DATABASE crop_db;
+```
+
+### 5. Create the `.env` File
+
+Create a file named `.env` in the root of the project:
+
+```env
+DATABASE_URL=postgresql://postgres:YOUR_PASSWORD@localhost:5432/crop_db
+SECRET_KEY=your-secret-key-change-this
+```
+
+> ⚠️ Replace `YOUR_PASSWORD` with your PostgreSQL password.  
+> ⚠️ Never commit `.env` to Git — it's already in `.gitignore`.
+
+### 6. Create the Database Tables
+
+Run this once to create all tables:
+
+```bash
+python seed.py
+```
+
+### 7. Add Missing Columns (if importing existing data from CSV)
+
+If you imported data from CSV files previously, run this in pgAdmin Query Tool to fix auto-increment sequences and add new columns:
+
+```sql
+-- Add missing columns
+ALTER TABLE fields ADD COLUMN IF NOT EXISTS field_name VARCHAR(150);
+ALTER TABLE fields ADD COLUMN IF NOT EXISTS is_active BOOLEAN DEFAULT TRUE;
+ALTER TABLE fields ADD COLUMN IF NOT EXISTS created_at TIMESTAMP DEFAULT NOW();
+
+ALTER TABLE crop_cycle ADD COLUMN IF NOT EXISTS status VARCHAR(50) DEFAULT 'active';
+ALTER TABLE crop_cycle ADD COLUMN IF NOT EXISTS actual_harvest_date VARCHAR(20);
+ALTER TABLE crop_cycle ADD COLUMN IF NOT EXISTS created_at TIMESTAMP DEFAULT NOW();
+
+ALTER TABLE satellite ADD COLUMN IF NOT EXISTS created_at TIMESTAMP DEFAULT NOW();
+ALTER TABLE weather ADD COLUMN IF NOT EXISTS created_at TIMESTAMP DEFAULT NOW();
+ALTER TABLE observation ADD COLUMN IF NOT EXISTS created_at TIMESTAMP DEFAULT NOW();
+
+-- Fix auto-increment sequences (run if you imported data from CSV)
+SELECT setval('users_user_id_seq', (SELECT MAX(user_id) FROM users));
+SELECT setval('fields_field_id_seq', (SELECT MAX(field_id) FROM fields));
+SELECT setval('region_region_id_seq', (SELECT MAX(region_id) FROM region));
+SELECT setval('satellite_satellite_id_seq', (SELECT MAX(satellite_id) FROM satellite));
+SELECT setval('crop_cycle_cycle_id_seq', (SELECT MAX(cycle_id) FROM crop_cycle));
+SELECT setval('weather_weather_id_seq', (SELECT MAX(weather_id) FROM weather));
+SELECT setval('observation_observation_id_seq', (SELECT MAX(observation_id) FROM observation));
+SELECT setval('bandvalues_band_id_seq', (SELECT MAX(band_id) FROM bandvalues));
+SELECT setval('derived_metrics_metric_id_seq', (SELECT MAX(metric_id) FROM derived_metrics));
+SELECT setval('alert_alert_id_seq', (SELECT MAX(alert_id) FROM alert));
+```
+
+### 8. Start the Server
+
+```bash
+uvicorn main:app --reload --port 5000
+```
+
+The API will be running at: `http://localhost:5000`  
+Swagger docs at: `http://localhost:5000/docs`
+
+---
 
 ## 📁 Project Structure
+
 ```
-DBMS/
-├── main.py                 # FastAPI entry point
-├── database.py             # Database configuration
-├── models.py               # SQLAlchemy models (10 tables)
-├── schemas.py              # Pydantic validation schemas
-├── auth.py                 # Authentication service
-├── seed.py                 # Database seeding script
-├── requirements.txt        # Python dependencies
-├── .env                    # Environment variables (not in git)
-├── .gitignore              # Git ignore rules
-├── Data/                   # CSV files for seeding
-│   ├── users.csv
-│   ├── fields.csv
-│   ├── crop_cycles.csv
-│   └── ... (7 more CSVs)
+project/
+├── main.py              # FastAPI app entry point
+├── models.py            # SQLAlchemy database models
+├── schemas.py           # Pydantic request/response schemas
+├── auth.py              # Authentication & RBAC logic
+├── database.py          # Database connection & session
+├── seed.py              # Creates database tables
+├── .env                 # Environment variables (DO NOT COMMIT)
 └── routes/
-    ├── __init__.py
-    ├── auth.py             # Authentication endpoints
-    ├── users.py            # User CRUD endpoints
-    ├── fields.py           # Field CRUD endpoints
-    └── crop_cycles.py      # Crop cycle endpoints
+    ├── auth.py          # Login & Register
+    ├── users.py         # User management
+    ├── regions.py       # Region management
+    ├── fields.py        # Field management
+    ├── crop_cycles.py   # Crop cycle management
+    ├── satellites.py    # Satellite management
+    ├── observations.py  # Observation management
+    ├── weather.py       # Weather data
+    ├── alerts.py        # Alert management
+    ├── band_values.py   # Band values
+    └── derived_metrics.py # Derived metrics (NDVI, EVI etc.)
 ```
 
-## 📊 Database Schema
+---
 
-| Table | Records | Purpose |
-|-------|---------|---------|
-| users | 20 | User accounts |
-| regions | 8 | Geographic regions (Punjab, Sindh, etc.) |
-| fields | 50 | Agricultural fields |
-| crop_cycles | 75 | Growing seasons |
-| satellites | 5 | Satellite sources |
-| observations | 162 | Satellite observations |
-| band_values | 644 | Spectral band data |
-| weather_records | 1000 | Weather data |
-| derived_metrics | 116 | NDVI, EVI, etc. |
-| alerts | 120 | System alerts |
+## 🔐 Authentication
 
-## 🔐 API Endpoints
+The API uses JWT Bearer tokens. Every protected route requires a token.
 
-### Authentication
-```
-POST   /api/auth/register     - Register new user
-POST   /api/auth/login        - Login and get JWT token
-GET    /api/auth/test         - Test auth routes
+### Step 1 — Register a user
+
+`POST /api/auth/register`
+
+```json
+{
+  "name": "John Farmer",
+  "email": "john@example.com",
+  "password": "farm1234",
+  "role": "farmer"
+}
 ```
 
-### Users
-```
-GET    /api/users/            - Get all users
-GET    /api/users/{id}        - Get specific user
-PUT    /api/users/{id}        - Update user
-DELETE /api/users/{id}        - Delete user
-```
+Available roles: `farmer`, `agronomist`, `admin`
 
-### Fields
-```
-GET    /api/fields/           - Get all fields
-GET    /api/fields/{id}       - Get specific field
-POST   /api/fields/           - Create field
-PUT    /api/fields/{id}       - Update field
-DELETE /api/fields/{id}       - Delete field
+### Step 2 — Login
+
+`POST /api/auth/login`
+
+```json
+{
+  "email": "john@example.com",
+  "password": "farm1234"
+}
 ```
 
-### Crop Cycles
-```
-GET    /api/crop-cycles/field/{field_id}  - Get field cycles
-GET    /api/crop-cycles/{id}              - Get specific cycle
-POST   /api/crop-cycles/                  - Create cycle
-PUT    /api/crop-cycles/{id}              - Update cycle
-DELETE /api/crop-cycles/{id}              - Delete cycle
-```
+Copy the `access_token` from the response.
 
-## 🔗 Interactive API Documentation
+### Step 3 — Authorize in Swagger
 
-Visit **http://localhost:5000/docs** for Swagger UI documentation
+1. Go to `http://localhost:5000/docs`
+2. Click the green **Authorize 🔒** button (top right)
+3. Paste your token in the **Value** field
+4. Click **Authorize** → **Close**
 
-## 👥 Team
+All routes will now include your token automatically.
 
-- Rameen Sohail - Backend Development
+---
 
-## 📝 Notes
+## 👥 Role Permissions
 
-- Database seeded with 1,599 agricultural records
-- JWT authentication with 24-hour token expiry
-- CORS enabled for frontend integration
-- All CRUD operations tested and working
+| Resource         | Admin | Agronomist | Farmer |
+|-----------------|-------|------------|--------|
+| Users           | CRUD  | Read       | Read (own) |
+| Regions         | CRUD  | Read       | Read |
+| Fields          | CRUD  | Read/Update | Read/Update (own) |
+| Crop Cycles     | CRUD  | Create/Read/Update | Read/Update (own) |
+| Satellites      | CRUD  | Read       | Read |
+| Observations    | CRUD  | Read       | Read (own) |
+| Band Values     | CRUD  | Read       | Read |
+| Weather         | CRUD  | Read       | Read (own) |
+| Derived Metrics | CRUD  | Read       | Read |
+| Alerts          | CRUD  | Create/Read/Update | Read (own) |
 
-## 🔄 Workflow
+---
 
-1. Create a branch: `git checkout -b feature/your-feature`
-2. Make changes and commit: `git commit -m "description"`
-3. Push: `git push origin feature/your-feature`
-4. Create Pull Request on GitHub
+## 🌐 API Endpoints
 
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/auth/register` | Register new user |
+| POST | `/api/auth/login` | Login and get token |
+| GET | `/api/users/` | Get all users |
+| GET | `/api/regions/` | Get all regions |
+| GET | `/api/fields/` | Get all fields |
+| GET | `/api/crop-cycles/` | Get all crop cycles |
+| GET | `/api/satellites/` | Get all satellites |
+| GET | `/api/observations/` | Get all observations |
+| GET | `/api/weather/` | Get all weather records |
+| GET | `/api/alerts/` | Get all alerts |
+| GET | `/api/band-values/` | Get all band values |
+| GET | `/api/derived-metrics/` | Get all derived metrics |
+
+Full endpoint list available at `/docs`.
+
+---
+
+## ⚠️ Common Issues
+
+**`Key (user_id)=(1) already exists`**  
+You imported CSV data and the sequence is out of sync. Run the sequence fix SQL from Step 7.
+
+**`column fields.field_name does not exist`**  
+Run the ALTER TABLE statements from Step 7 to add missing columns.
+
+**`401 Unauthorized`**  
+You forgot to authorize in Swagger. Follow the Authentication steps above.
+
+**`422 Unprocessable Content`**  
+Your request body is missing a required field or has wrong format. Check Swagger for the exact error detail.
+
+**`ModuleNotFoundError`**  
+Your virtual environment is not activated. Run `venv\Scripts\activate` (Windows) or `source venv/bin/activate` (Mac/Linux).
+
+---
+
+## 🛠️ Tech Stack
+
+- **FastAPI** — Web framework
+- **SQLAlchemy** — ORM
+- **PostgreSQL** — Database
+- **Pydantic** — Data validation
+- **bcrypt** — Password hashing
+- **python-jose** — JWT tokens
+- **uvicorn** — ASGI server

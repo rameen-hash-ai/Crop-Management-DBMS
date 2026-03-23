@@ -37,7 +37,7 @@ def get_db():
         db.close()
 
 def init_db():
-    from models import User,Field,region,Satellite,CropCycle,Weather,Alert
+    from models import User,Field,Region,Satellite,CropCycle,Weather,Alert
     base.metadata.create_all(bind=engine)
     print("Database tables created successfully")
 
