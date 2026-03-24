@@ -11,6 +11,26 @@ logging.basicConfig(level=logging.INFO,format="%(asctime)s - %(levelname)s - %(m
 
 logger=logging.getLogger(__name__)
 
+from sqlalchemy import text
+
+def fix_sequences(db):
+    sequences = [
+        "SELECT setval('users_user_id_seq', COALESCE((SELECT MAX(user_id) FROM users), 1))",
+        "SELECT setval('fields_field_id_seq', COALESCE((SELECT MAX(field_id) FROM fields), 1))",
+        "SELECT setval('region_region_id_seq', COALESCE((SELECT MAX(region_id) FROM region), 1))",
+        "SELECT setval('satellite_satellite_id_seq', COALESCE((SELECT MAX(satellite_id) FROM satellite), 1))",
+        "SELECT setval('crop_cycle_cycle_id_seq', COALESCE((SELECT MAX(cycle_id) FROM crop_cycle), 1))",
+        "SELECT setval('weather_weather_id_seq', COALESCE((SELECT MAX(weather_id) FROM weather), 1))",
+        "SELECT setval('observation_observation_id_seq', COALESCE((SELECT MAX(observation_id) FROM observation), 1))",
+        "SELECT setval('bandvalues_band_id_seq', COALESCE((SELECT MAX(band_id) FROM bandvalues), 1))",
+        "SELECT setval('derived_metrics_metric_id_seq', COALESCE((SELECT MAX(metric_id) FROM derived_metrics), 1))",
+        "SELECT setval('alert_alert_id_seq', COALESCE((SELECT MAX(alert_id) FROM alert), 1))",
+    ]
+    for seq in sequences:
+        db.execute(text(seq))
+    db.commit()
+    print(" Sequences fixed!")
+
 class DataBaseSeeder:
     def __init__(self):
         #seed database with initial data from csv files
@@ -26,6 +46,7 @@ class DataBaseSeeder:
             logger.info("="*70)
             
             self.create_tables()#creating tables
+            fix_sequences(self.db)
 
             self.import_regions()
             self.import_users()
